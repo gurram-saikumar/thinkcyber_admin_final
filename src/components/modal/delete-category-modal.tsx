@@ -28,7 +28,6 @@ export const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
       await onConfirm();
       onClose();
     } catch (error) {
-      console.error('Error deleting category:', error);
       // You can add toast notification here
     } finally {
       setIsDeleting(false);
@@ -54,7 +53,7 @@ export const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
           <AlertTriangle className="h-6 w-6 text-red-600 flex-shrink-0" />
           <div>
             <p className="font-medium text-red-800">
-              Are you sure you want to delete "{categoryName}"?
+              Are you sure you want to delete &quot;{categoryName}&quot;?
             </p>
             <p className="text-sm text-red-600 mt-1">
               This category contains {topicsCount} topic{topicsCount !== 1 ? 's' : ''}. 

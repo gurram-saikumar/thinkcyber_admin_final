@@ -31,7 +31,7 @@ export function DeletePrivacyModal({ isOpen, onClose, privacy, onConfirm }: Dele
       await onConfirm();
       onClose();
     } catch (error) {
-      console.error('Error deleting privacy policy:', error);
+  // You can add toast notification here
     } finally {
       setIsDeleting(false);
     }
@@ -43,7 +43,7 @@ export function DeletePrivacyModal({ isOpen, onClose, privacy, onConfirm }: Dele
         <AlertDialogHeader>
           <AlertDialogTitle>Delete Privacy Policy</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete "{privacy?.title}"? This action cannot be undone and will permanently remove the privacy policy from the system.
+            Are you sure you want to delete &quot;{privacy?.title}&quot;? This action cannot be undone and will permanently remove the privacy policy from the system.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

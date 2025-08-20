@@ -2,28 +2,60 @@ import { useState, useEffect } from 'react';
 import { toast } from '@/lib/toast';
 import { apiService } from '@/lib/api-service';
 import { API_ENDPOINTS } from '@/constants/api-endpoints';
+// Privacy Policy interface (updated to remove language, defaults to English)
+export interface PrivacyPolicy {
+  id?: number;
+  title: string;
+  content: string;
+  version: string;
+  status: 'Draft' | 'Published' | 'Archived';
+  effectiveDate?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  createdBy?: string;
+  updatedBy?: string;
+}
+
+// Example hook implementation (fixes misplaced logic)
+export function usePrivacyPolicies(filters?: any) {
+  const [privacyPolicies, setPrivacyPolicies] = useState<PrivacyPolicy[]>([]);
+  const [stats, setStats] = useState<any>({});
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchPolicies = async () => {
+      const params: any = {};
       if (filters?.search) params.search = filters.search;
       if (filters?.status && filters.status !== 'all') params.status = filters.status;
       if (filters?.sortBy) params.sortBy = filters.sortBy;
       if (filters?.sortOrder) params.sortOrder = filters.sortOrder;
 
-      const result = await apiService.get(API_ENDPOINTS.PRIVACY.BASE, { params });
-
-      if (result.success && result.data) {
-        setPrivacyPolicies(Array.isArray(result.data) ? result.data : [result.data]);
-        setStats(result.data?.stats || {
-          total: 0,
-          draft: 0,
-          published: 0,
-          archived: 0,
-          languages: 0,
-          latestVersion: '1.0'
-        });
-      } else {
-        setError(result.error || 'Failed to fetch privacy policies');
+      try {
+        const result = await apiService.get(API_ENDPOINTS.PRIVACY.BASE, { params });
+        if (result.success && result.data) {
+          setPrivacyPolicies(Array.isArray(result.data) ? result.data : [result.data]);
+          setStats(result.data?.stats || {
+            total: 0,
+            draft: 0,
+            published: 0,
+            archived: 0,
+            languages: 0,
+            latestVersion: '1.0'
+          });
+        } else {
+          setError(result.error || 'Failed to fetch privacy policies');
+          toast.error('Failed to fetch privacy policies. Please try again.');
+        }
+      } catch (err: any) {
+        setError(err.message || 'Failed to fetch privacy policies');
         toast.error('Failed to fetch privacy policies. Please try again.');
-      }ib/api-service';
-import { API_ENDPOINTS } from '@/constants/api-endpoints';
+      }
+    };
+    fetchPolicies();
+  }, [filters]);
+
+  return { privacyPolicies, stats, error };
+}
 
 // Privacy Policy interface (updated to remove language, defaults to English)
 export interface PrivacyPolicy {
@@ -90,59 +122,7 @@ export interface CreatePrivacyData {
 }
 
 // Hook for privacy policy operations
-export function usePrivacyPolicies() {
-  const [privacyPolicies, setPrivacyPolicies] = useState<PrivacyPolicy[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [stats, setStats] = useState<{
-    total: number;
-    draft: number;
-    published: number;
-    archived: number;
-    latestVersion: string;
-  } | null>(null);
-
-  // Fetch all privacy policies
-  const fetchPrivacyPolicies = async (filters?: {
-    page?: number;
-    limit?: number;
-    search?: string;
-    status?: string;
-    sortBy?: string;
-    sortOrder?: string;
-  }) => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const queryParams = new URLSearchParams();
-      
-      if (filters?.page) queryParams.append('page', filters.page.toString());
-      if (filters?.limit) queryParams.append('limit', filters.limit.toString());
-      if (filters?.search) queryParams.append('search', filters.search);
-      if (filters?.status && filters.status !== 'all') queryParams.append('status', filters.status);
-      if (filters?.sortBy) queryParams.append('sortBy', filters.sortBy);
-      if (filters?.sortOrder) queryParams.append('sortOrder', filters.sortOrder);
-
-      const url = `/api/privacy${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
-      const response = await fetch(url);
-      const result: PrivacyPoliciesResponse = await response.json();
-
-      if (result.success) {
-        setPrivacyPolicies(result.data);
-        setStats(result.stats);
-      } else {
-        setError(result.error || 'Failed to fetch privacy policies');
-        toast.error('Failed to fetch privacy policies. Please try again.');
-      }
-    } catch (err) {
-      const errorMessage = 'Network error. Please check your connection.';
-      setError(errorMessage);
-      toast.error(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
+// ...existing code...
 
   // Fetch specific privacy policy by ID
   const fetchPrivacyPolicy = async (id: number): Promise<PrivacyPolicy | null> => {

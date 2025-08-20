@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 // Build URL helper function for API calls
 export function buildUrl(endpoint: string, params?: Record<string, string | number | boolean>): string {
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000/api';
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   
   // Remove leading slash if present to avoid double slashes
   const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;

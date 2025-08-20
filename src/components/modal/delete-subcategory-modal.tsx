@@ -30,8 +30,7 @@ export const DeleteSubCategoryModal: React.FC<DeleteSubCategoryModalProps> = ({
       await onConfirm();
       onClose();
     } catch (error) {
-      console.error('Error deleting sub-category:', error);
-      // You can add toast notification here
+  // You can add toast notification here
     } finally {
       setIsDeleting(false);
     }
@@ -56,10 +55,10 @@ export const DeleteSubCategoryModal: React.FC<DeleteSubCategoryModalProps> = ({
           <AlertTriangle className="h-6 w-6 text-red-600 flex-shrink-0" />
           <div>
             <p className="font-medium text-red-800">
-              Are you sure you want to delete "{subCategoryName}"?
+              Are you sure you want to delete &quot;{subCategoryName}&quot;?
             </p>
             <p className="text-sm text-red-600 mt-1">
-              This sub-category belongs to "{parentCategoryName}" and contains {topicsCount} topic{topicsCount !== 1 ? 's' : ''}. 
+              This sub-category belongs to &quot;{parentCategoryName}&quot; and contains {topicsCount} topic{topicsCount !== 1 ? 's' : ''}. 
               {topicsCount > 0 && ' All associated topics will also be affected.'}
             </p>
           </div>

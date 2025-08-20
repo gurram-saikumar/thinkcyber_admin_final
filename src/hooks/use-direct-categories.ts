@@ -2,8 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { apiService } from '@/lib/api-service';
 import { API_ENDPOINTS } from '@/constants/api-endpoints';
-  };
-};
+ 
 
 export const useDirectCategories = (params: any = {}) => {
   const [state, setState] = useState<{
@@ -18,8 +17,7 @@ export const useDirectCategories = (params: any = {}) => {
 
   const fetchCategories = useCallback(async () => {
     try {
-      setState(prev => ({ ...prev, loading: true, error: null }));
-      
+      setState(prev => ({ ...prev, loading: true, error: null })); 
       const response = await apiService.get(API_ENDPOINTS.CATEGORIES.BASE, { params });
       
       setState({
