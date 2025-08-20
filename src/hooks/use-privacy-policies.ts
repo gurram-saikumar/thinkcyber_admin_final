@@ -3,18 +3,7 @@ import { toast } from '@/lib/toast';
 import { apiService } from '@/lib/api-service';
 import { API_ENDPOINTS } from '@/constants/api-endpoints';
 // Privacy Policy interface (updated to remove language, defaults to English)
-export interface PrivacyPolicy {
-  id?: number;
-  title: string;
-  content: string;
-  version: string;
-  status: 'Draft' | 'Published' | 'Archived';
-  effectiveDate?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  createdBy?: string;
-  updatedBy?: string;
-}
+// ...existing code...
 
 // Example hook implementation (fixes misplaced logic)
 export function usePrivacyPolicies(filters?: any) {
@@ -54,7 +43,17 @@ export function usePrivacyPolicies(filters?: any) {
     fetchPolicies();
   }, [filters]);
 
-  return { privacyPolicies, stats, error };
+  // ...existing code...
+  return {
+    privacyPolicies,
+    stats,
+    error,
+    fetchPrivacyPolicy,
+    createPrivacyPolicy,
+    updatePrivacyPolicy,
+    deletePrivacyPolicy,
+    publishPrivacyPolicy,
+  };
 }
 
 // Privacy Policy interface (updated to remove language, defaults to English)
@@ -144,7 +143,6 @@ export interface CreatePrivacyData {
 
   // Create new privacy policy
   const createPrivacyPolicy = async (data: CreatePrivacyData): Promise<PrivacyPolicy | null> => {
-    setLoading(true);
     try {
       const response = await fetch('/api/privacy', {
         method: 'POST',
@@ -158,8 +156,6 @@ export interface CreatePrivacyData {
 
       if (result.success && result.data) {
         toast.success('Privacy policy created successfully');
-        // Refresh the list
-        await fetchPrivacyPolicies();
         return result.data;
       } else {
         toast.error(result.error || 'Failed to create privacy policy');
@@ -168,14 +164,11 @@ export interface CreatePrivacyData {
     } catch (err) {
       toast.error('Network error. Please try again.');
       return null;
-    } finally {
-      setLoading(false);
     }
   };
 
   // Update existing privacy policy
   const updatePrivacyPolicy = async (id: number, data: CreatePrivacyData): Promise<PrivacyPolicy | null> => {
-    setLoading(true);
     try {
       const response = await fetch(`/api/privacy/${id}`, {
         method: 'PUT',
@@ -189,8 +182,6 @@ export interface CreatePrivacyData {
 
       if (result.success && result.data) {
         toast.success('Privacy policy updated successfully');
-        // Refresh the list
-        await fetchPrivacyPolicies();
         return result.data;
       } else {
         toast.error(result.error || 'Failed to update privacy policy');
@@ -199,14 +190,11 @@ export interface CreatePrivacyData {
     } catch (err) {
       toast.error('Network error. Please try again.');
       return null;
-    } finally {
-      setLoading(false);
     }
   };
 
   // Delete privacy policy
   const deletePrivacyPolicy = async (id: number): Promise<boolean> => {
-    setLoading(true);
     try {
       const response = await fetch(`/api/privacy/${id}`, {
         method: 'DELETE',
@@ -216,8 +204,6 @@ export interface CreatePrivacyData {
 
       if (result.success) {
         toast.success('Privacy policy deleted successfully');
-        // Refresh the list
-        await fetchPrivacyPolicies();
         return true;
       } else {
         toast.error(result.error || 'Failed to delete privacy policy');
@@ -226,14 +212,11 @@ export interface CreatePrivacyData {
     } catch (err) {
       toast.error('Network error. Please try again.');
       return false;
-    } finally {
-      setLoading(false);
     }
   };
 
   // Publish privacy policy
   const publishPrivacyPolicy = async (id: number): Promise<PrivacyPolicy | null> => {
-    setLoading(true);
     try {
       const response = await fetch(`/api/privacy/${id}/publish`, {
         method: 'POST',
@@ -243,8 +226,6 @@ export interface CreatePrivacyData {
 
       if (result.success && result.data) {
         toast.success('Privacy policy published successfully');
-        // Refresh the list
-        await fetchPrivacyPolicies();
         return result.data;
       } else {
         toast.error(result.error || 'Failed to publish privacy policy');
@@ -253,8 +234,6 @@ export interface CreatePrivacyData {
     } catch (err) {
       toast.error('Network error. Please try again.');
       return null;
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -270,4 +249,3 @@ export interface CreatePrivacyData {
     deletePrivacyPolicy,
     publishPrivacyPolicy,
   };
-}
