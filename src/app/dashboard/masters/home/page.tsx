@@ -25,7 +25,7 @@ import {
   DeleteFAQResponse
 } from '@/types/homepage-api';
 
-interface FAQ {
+interface FAQ {         
   id: string;
   question: string;
   answer: string;
@@ -264,14 +264,14 @@ export default function HomePageMaster() {
         // Fallback to blob URL for preview (temporary)
         const fileUrl = URL.createObjectURL(file);
         updateContent(section, field, fileUrl);
-        toast.warning(`${file.name} selected for preview. Note: Upload API not available, using temporary preview.`);
+    toast.warning(`${file.name} selected for preview. Note: Upload API not available, using temporary preview.`.replace("'", "&apos;"));
       }
     } catch (error) {
       console.error('Upload error:', error);
       // Fallback to blob URL for preview
       const fileUrl = URL.createObjectURL(file);
       updateContent(section, field, fileUrl);
-      toast.warning(`${file.name} selected for preview. Upload failed, using temporary preview.`);
+  toast.warning(`${file.name} selected for preview. Upload failed, using temporary preview.`.replace("'", "&apos;"));
     }
   };
 
@@ -282,7 +282,7 @@ export default function HomePageMaster() {
   // FAQ management functions
   const addFaq = async () => {
     if (!newFaq.question || !newFaq.answer) {
-      toast.warning('Please fill in both question and answer fields');
+  toast.warning('Please fill in both question and answer fields'.replace("'", "&apos;"));
       return;
     }
     
@@ -314,14 +314,14 @@ export default function HomePageMaster() {
         setNewFaq({ id: '', question: '', answer: '' });
         setIsAddingFaq(false);
         setHasChanges(true);
-        toast.success('FAQ added successfully!');
+  toast.success('FAQ added successfully!'.replace("'", "&apos;"));
       } else {
-        toast.error(result.error || 'Failed to add FAQ');
+  toast.error(result.error || 'Failed to add FAQ'.replace("'", "&apos;"));
       }
     } catch (error) {
       console.error('Error adding FAQ:', error);
-      toast.error('Failed to add FAQ. Please try again.');
-      setError('Failed to add FAQ. Please try again.');
+  toast.error('Failed to add FAQ. Please try again.'.replace("'", "&apos;"));
+  setError('Failed to add FAQ. Please try again.'.replace("'", "&apos;"));
     }
   };
 
@@ -348,7 +348,7 @@ export default function HomePageMaster() {
           question: editingFaqData.question
         });
         if (!result.success) {
-          toast.error(result.error || 'Failed to update FAQ question');
+          toast.error(result.error || 'Failed to update FAQ question'.replace("'", "&apos;"));
           return;
         }
       }
@@ -359,7 +359,7 @@ export default function HomePageMaster() {
           answer: editingFaqData.answer
         });
         if (!result.success) {
-          toast.error(result.error || 'Failed to update FAQ answer');
+          toast.error(result.error || 'Failed to update FAQ answer'.replace("'", "&apos;"));
           return;
         }
       }
@@ -379,10 +379,10 @@ export default function HomePageMaster() {
       setHasChanges(true);
       setEditingFaqId(null);
       setEditingFaqData({question: '', answer: ''});
-      toast.success('FAQ updated successfully!');
+  toast.success('FAQ updated successfully!'.replace("'", "&apos;"));
     } catch (error) {
       console.error('Error updating FAQ:', error);
-      toast.error('Failed to update FAQ. Please try again.');
+  toast.error('Failed to update FAQ. Please try again.'.replace("'", "&apos;"));
     }
   };
 
@@ -720,7 +720,7 @@ export default function HomePageMaster() {
                         </p>
                         {contentData.about.image.startsWith('blob:') && (
                           <p className='text-xs text-orange-600'>
-                            ⚠️ This is a temporary preview. Click "Save Changes" to upload permanently.
+                            ⚠️ This is a temporary preview. Click &quot;Save Changes&quot; to upload permanently.
                           </p>
                         )}
                       </div>
@@ -883,7 +883,7 @@ export default function HomePageMaster() {
                 <div className="space-y-2">
                   <Label>Current FAQs</Label>
                   <div className="space-y-3">
-                    {contentData.faqs.map((faq: FAQ, index: number) => (
+                    {contentData.faqs.map((faq: FAQ) => (
                       <div key={faq.id} className="border rounded-lg">
                         {/* FAQ Header with Actions */}
                         <div className="flex items-center justify-between p-4 border-b">
@@ -957,7 +957,7 @@ export default function HomePageMaster() {
 
                 {contentData.faqs.length === 0 && (
                   <div className="text-center py-8 text-gray-500">
-                    <p>No FAQs added yet. Click "Add FAQ" to get started.</p>
+                    <p>No FAQs added yet. Click &quot;Add FAQ&quot; to get started.</p>
                   </div>
                 )}
               </CardContent>
