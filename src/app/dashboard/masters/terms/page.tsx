@@ -71,12 +71,7 @@ export default function TermsPage() {
       if (languageFilter !== 'all') params.language = languageFilter;
       
       const result = await apiService.get(API_ENDPOINTS.TERMS.BASE, { params });
-      
-      // Debug logging to check the response structure
-      console.log('🔍 Terms API Response:', result);
-      console.log('📊 Response data:', result.data);
-      console.log('📈 Response stats:', result.stats);
-      
+       
       if (result.success) {
         const termsData = Array.isArray(result.data) ? result.data : [];
         setTerms(termsData);
@@ -98,12 +93,10 @@ export default function TermsPage() {
         setStats(statsData);
       } else {
         toast.error('Failed to fetch terms and conditions. Please try again.');
-        console.error('Failed to fetch terms:', result.error);
-      }
+       }
     } catch (error) {
       toast.error('Network error. Please check your connection.');
-      console.error('Error fetching terms:', error);
-      // Set empty arrays to prevent errors
+       // Set empty arrays to prevent errors
       setTerms([]);
       setStats({
         total: 0,
@@ -148,8 +141,7 @@ export default function TermsPage() {
         }
       }
     } catch (error) {
-      console.error('Error saving terms:', error);
-      throw error; // Re-throw to handle in modal
+       throw error; // Re-throw to handle in modal
     }
   };
 
@@ -169,8 +161,7 @@ export default function TermsPage() {
         toast.error(result.error || 'Failed to delete terms and conditions');
       }
     } catch (error) {
-      toast.error('Network error. Please try again.');
-      console.error('Error deleting terms:', error);
+      toast.error('Network error. Please try again.'); 
     }
   };
 
@@ -188,8 +179,7 @@ export default function TermsPage() {
         toast.error(result.error || 'Failed to publish terms and conditions');
       }
     } catch (error) {
-      toast.error('Network error. Please try again.');
-      console.error('Error publishing terms:', error);
+      toast.error('Network error. Please try again.'); 
     }
   };
 

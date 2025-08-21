@@ -78,8 +78,7 @@ const minimalFallback: Category[] = [
 
 // GET - Fetch all categories with optional filters
 export async function GET(request: NextRequest) {
-  console.log('🔍 Fetching all categories...');
-  try {
+   try {
     const searchParams = request.nextUrl.searchParams;
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '50'); // Increased default limit
@@ -90,10 +89,7 @@ export async function GET(request: NextRequest) {
     
     // Special parameter to fetch all categories without pagination
     const fetchAll = searchParams.get('fetchAll') === 'true';
-
-    console.log('📊 Request parameters:', {
-      page, limit, search, status, sortBy, sortOrder, fetchAll
-    });
+ 
 
     // Build query parameters
     const queryParams: Record<string, any> = {
@@ -108,14 +104,12 @@ export async function GET(request: NextRequest) {
 
     // Call backend API with fallback to mock data
     try {
-      console.log('🌐 Attempting to call backend API for categories...');
-      const response = await apiService.get(
+       const response = await apiService.get(
         buildApiUrlWithQuery(API_ENDPOINTS.CATEGORIES.BASE, queryParams)
       );
 
       if (!response.success) {
-        console.warn('⚠️ Backend API not available, using minimal fallback:', response.error);
-        // Return minimal fallback data
+         // Return minimal fallback data
         return NextResponse.json({
           success: true,
           data: minimalFallback,
@@ -131,8 +125,7 @@ export async function GET(request: NextRequest) {
         });
       }
 
-      console.log('✅ Backend API responded successfully for categories');
-      // Extract categories data and transform snake_case to camelCase
+       // Extract categories data and transform snake_case to camelCase
       const rawCategories = response.data?.categories || response.data || [];
       const categories = rawCategories.map(transformCategoryData);
 
@@ -161,8 +154,7 @@ export async function GET(request: NextRequest) {
       });
 
     } catch (error) {
-      console.warn('⚠️ Backend API connection failed, using minimal fallback immediately:', error);
-      // Return minimal fallback data
+       // Return minimal fallback data
       return NextResponse.json({
         success: true,
         data: minimalFallback,
@@ -179,8 +171,7 @@ export async function GET(request: NextRequest) {
     }
 
   } catch (error) {
-    console.error('Error fetching categories:', error);
-    return NextResponse.json(
+     return NextResponse.json(
       { success: false, error: 'Internal server error' },
       { status: 500 }
     );
@@ -240,8 +231,7 @@ export async function POST(request: NextRequest) {
     }, { status: 201 });
 
   } catch (error) {
-    console.error('Error creating category:', error);
-    return NextResponse.json(
+     return NextResponse.json(
       { success: false, error: 'Internal server error' },
       { status: 500 }
     );

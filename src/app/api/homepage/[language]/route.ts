@@ -171,11 +171,7 @@ export async function POST(
         },
         { status: 500 }
       );
-    }
-    
-    console.log(`Saving homepage data for language: ${language}`);
-    console.log('Data saved successfully via API service');
-    
+    } 
     // Simulate processing time
     await new Promise(resolve => setTimeout(resolve, 500));
 
@@ -238,8 +234,7 @@ export async function POST(
     });
 
   } catch (error) {
-    console.error('Error saving homepage data:', error);
-    return NextResponse.json(
+     return NextResponse.json(
       { 
         success: false,
         error: 'Internal server error',
@@ -276,8 +271,7 @@ export async function GET(
       const response = await apiService.get(API_ENDPOINTS.HOMEPAGE.BY_LANGUAGE(language));
 
       if (!response.success) {
-        console.warn('⚠️ Backend API not available, using mock data:', response.error);
-        // Use mock data as fallback
+         // Use mock data as fallback
         return NextResponse.json({
           success: true,
           data: mockHomepageData,
@@ -295,8 +289,7 @@ export async function GET(
       });
       
     } catch (error) {
-      console.warn('⚠️ Backend API connection failed, using mock data:', error);
-      // Use mock data as fallback when backend is not accessible
+       // Use mock data as fallback when backend is not accessible
       return NextResponse.json({
         success: true,
         data: mockHomepageData,
@@ -305,8 +298,7 @@ export async function GET(
     }
     
   } catch (error) {
-    console.error('Error in GET homepage API:', error);
-    return NextResponse.json(
+     return NextResponse.json(
       { 
         success: false,
         error: 'Internal server error',

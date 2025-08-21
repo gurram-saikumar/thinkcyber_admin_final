@@ -135,10 +135,7 @@ export default function HomePageMaster() {
       
       if (result.success && result.data) {
         const homepageData = result.data;
-        
-        console.log('API Response - About Image:', homepageData.about?.image);
-        console.log('Full API Response:', homepageData);
-        
+         
         // Transform API response to component state format
         const transformedData: HomepageContent = {
           hero: {

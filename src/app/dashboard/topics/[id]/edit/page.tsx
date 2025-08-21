@@ -56,29 +56,23 @@ interface CategoryData {
 
 // API functions
 const fetchCategories = async () => {
-  console.log('🔍 Fetching categories...');
-  try {
+   try {
     const result = await apiService.get<any>(API_ENDPOINTS.CATEGORIES.BASE, {
       params: { fetchAll: 'true' }
     });
-    console.log('📡 Categories API response:', result);
-    
+     
     if (result.success) {
-      console.log('✅ Categories fetched successfully:', result.data);
-      return result.data || [];
+       return result.data || [];
     } else {
-      console.error('❌ Failed to fetch categories:', result.error);
-      return [];
+       return [];
     }
   } catch (error) {
-    console.error('💥 Error fetching categories:', error);
-    return [];
+     return [];
   }
 };
 
 const fetchSubcategories = async (categoryId: string) => {
-  console.log('🔍 Fetching subcategories for category:', categoryId);
-  try {
+   try {
     const result = await apiService.get<any>(API_ENDPOINTS.SUBCATEGORIES.BASE, {
       params: { 
         categoryId: categoryId,

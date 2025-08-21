@@ -74,9 +74,7 @@ export default function SubCategoriesPage() {
       if (searchTerm) params.search = searchTerm;
       if (statusFilter !== 'all') params.status = statusFilter;
       if (categoryFilter !== 'all') params.categoryId = categoryFilter;
-      
-      console.log('🔍 API params being sent:', params);
-      
+       
       const result = await apiService.get(API_ENDPOINTS.SUBCATEGORIES.BASE, { params });
       
       if (result.success && result.data) {
@@ -120,15 +118,11 @@ export default function SubCategoriesPage() {
 
   // Create or update sub-category
   const handleSaveSubCategory = async (subCategoryData: Omit<SubCategory, 'id' | 'categoryName' | 'topicsCount' | 'createdAt' | 'updatedAt'>) => {
-    try {
-      console.log('🔍 Saving sub-category data:', subCategoryData);
-      
+    try { 
       if (selectedSubCategory) {
         // Update existing sub-category
         const result = await apiService.put(API_ENDPOINTS.SUBCATEGORIES.BY_ID(selectedSubCategory.id), subCategoryData);
-        
-        console.log('📝 Update result:', result);
-        
+         
         if (result.success) {
           await fetchSubCategories(); // Refresh the list
           setIsEditModalOpen(false);
@@ -141,9 +135,7 @@ export default function SubCategoriesPage() {
       } else {
         // Create new sub-category
         const result = await apiService.post(API_ENDPOINTS.SUBCATEGORIES.BASE, subCategoryData);
-        
-        console.log('📝 Create result:', result);
-        
+         
         if (result.success) {
           await fetchSubCategories(); // Refresh the list
           setIsAddModalOpen(false);

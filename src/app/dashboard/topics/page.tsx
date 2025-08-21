@@ -70,8 +70,7 @@ export default function TopicsPage() {
 
   // Fetch categories from API
   const fetchCategories = useCallback(async () => {
-    try {
-      console.log('🔍 Fetching categories for topics filter...');
+    try { 
       const result = await apiService.get(API_ENDPOINTS.CATEGORIES.BASE, {
         params: { fetchAll: 'true' }
       });
@@ -83,15 +82,12 @@ export default function TopicsPage() {
             id: String(cat.id),
             name: cat.name
           }));
-        console.log('✅ Categories loaded for filter:', activeCategories);
-        setCategories(activeCategories);
+         setCategories(activeCategories);
       } else {
-        console.error('❌ Failed to fetch categories:', result.error);
-        setCategories([]);
+         setCategories([]);
       }
     } catch (error) {
-      console.error('💥 Error fetching categories:', error);
-      setCategories([]);
+       setCategories([]);
     }
   }, []);
 
@@ -127,16 +123,13 @@ export default function TopicsPage() {
           ),
         };
         
-        console.log('📊 Calculated stats:', calculatedStats);
-        setStats(calculatedStats);
+         setStats(calculatedStats);
       } else {
         toast.error('Failed to fetch topics. Please try again.');
-        console.error('Failed to fetch topics:', result.error);
-      }
+       }
     } catch (error) {
       toast.error('Network error. Please check your connection.');
-      console.error('Error fetching topics:', error);
-    } finally {
+     } finally {
       setLoading(false);
     }
   }, [searchTerm, selectedCategory, selectedStatus, selectedDifficulty]);
