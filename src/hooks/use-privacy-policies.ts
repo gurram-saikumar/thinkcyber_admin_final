@@ -122,8 +122,9 @@ export interface CreatePrivacyData {
 
 // Hook for privacy policy operations
 // ...existing code...
+// Move these functions inside usePrivacyPolicies
 
-  // Fetch specific privacy policy by ID
+// Add these inside usePrivacyPolicies, after useEffect and before the return statement:
   const fetchPrivacyPolicy = async (id: number): Promise<PrivacyPolicy | null> => {
     try {
       const response = await fetch(`/api/privacy/${id}`);
@@ -141,7 +142,6 @@ export interface CreatePrivacyData {
     }
   };
 
-  // Create new privacy policy
   const createPrivacyPolicy = async (data: CreatePrivacyData): Promise<PrivacyPolicy | null> => {
     try {
       const response = await fetch('/api/privacy', {
@@ -167,7 +167,6 @@ export interface CreatePrivacyData {
     }
   };
 
-  // Update existing privacy policy
   const updatePrivacyPolicy = async (id: number, data: CreatePrivacyData): Promise<PrivacyPolicy | null> => {
     try {
       const response = await fetch(`/api/privacy/${id}`, {
@@ -193,7 +192,6 @@ export interface CreatePrivacyData {
     }
   };
 
-  // Delete privacy policy
   const deletePrivacyPolicy = async (id: number): Promise<boolean> => {
     try {
       const response = await fetch(`/api/privacy/${id}`, {
@@ -215,7 +213,6 @@ export interface CreatePrivacyData {
     }
   };
 
-  // Publish privacy policy
   const publishPrivacyPolicy = async (id: number): Promise<PrivacyPolicy | null> => {
     try {
       const response = await fetch(`/api/privacy/${id}/publish`, {
@@ -237,15 +234,4 @@ export interface CreatePrivacyData {
     }
   };
 
-  return {
-    privacyPolicies,
-    loading,
-    error,
-    stats,
-    fetchPrivacyPolicies,
-    fetchPrivacyPolicy,
-    createPrivacyPolicy,
-    updatePrivacyPolicy,
-    deletePrivacyPolicy,
-    publishPrivacyPolicy,
-  };
+// Remove the duplicate return statement at the bottom (outside any function).

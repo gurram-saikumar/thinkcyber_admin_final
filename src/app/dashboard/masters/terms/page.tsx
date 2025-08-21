@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import PageContainer from '@/components/layout/page-container';
 import { Button } from '@/components/ui/button';
@@ -62,7 +62,7 @@ export default function TermsPage() {
   const [termsToDelete, setTermsToDelete] = useState<TermsAndConditions | null>(null);
 
   // Fetch terms from API
-  const fetchTerms = async () => {
+  const fetchTerms = useCallback(async () => {
     try {
       setLoading(true);
       const params: Record<string, string> = {};
@@ -71,12 +71,11 @@ export default function TermsPage() {
       if (languageFilter !== 'all') params.language = languageFilter;
       
       const result = await apiService.get(API_ENDPOINTS.TERMS.BASE, { params });
-       
+      
       if (result.success) {
         const termsData = Array.isArray(result.data) ? result.data : [];
         setTerms(termsData);
         
-        // Use stats from API response if available, otherwise calculate from data
         const statsData = {
           total: result.stats?.total || result.meta?.total || termsData.length,
           draft: result.stats?.draft || termsData.filter((term: TermsAndConditions) => term.status === 'Draft').length,
@@ -93,10 +92,9 @@ export default function TermsPage() {
         setStats(statsData);
       } else {
         toast.error('Failed to fetch terms and conditions. Please try again.');
-       }
+      }
     } catch (error) {
       toast.error('Network error. Please check your connection.');
-       // Set empty arrays to prevent errors
       setTerms([]);
       setStats({
         total: 0,
@@ -109,17 +107,16 @@ export default function TermsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [searchTerm, statusFilter, languageFilter]);
 
   // Create or update terms
   const handleSaveTerms = async (termsData: Omit<TermsAndConditions, 'id' | 'createdAt' | 'updatedAt' | 'createdBy' | 'updatedBy'>) => {
     try {
       if (selectedTerms) {
-        // Update existing terms
         const result = await apiService.put(API_ENDPOINTS.TERMS.BY_ID(selectedTerms.id), termsData);
         
         if (result.success) {
-          await fetchTerms(); // Refresh the list
+          await fetchTerms();
           setIsEditModalOpen(false);
           setSelectedTerms(null);
           toast.success('Terms and conditions updated successfully');
@@ -128,11 +125,10 @@ export default function TermsPage() {
           throw new Error(result.error);
         }
       } else {
-        // Create new terms
         const result = await apiService.post(API_ENDPOINTS.TERMS.BASE, termsData);
         
         if (result.success) {
-          await fetchTerms(); // Refresh the list
+          await fetchTerms();
           setIsAddModalOpen(false);
           toast.success('Terms and conditions created successfully');
         } else {
@@ -141,7 +137,8 @@ export default function TermsPage() {
         }
       }
     } catch (error) {
-       throw error; // Re-throw to handle in modal
+      toast.error('Network error. Please try again.');
+      throw error;
     }
   };
 
@@ -153,7 +150,7 @@ export default function TermsPage() {
       const result = await apiService.delete(API_ENDPOINTS.TERMS.BY_ID(termsToDelete.id));
       
       if (result.success) {
-        await fetchTerms(); // Refresh the list
+        await fetchTerms();
         setIsDeleteModalOpen(false);
         setTermsToDelete(null);
         toast.success('Terms and conditions deleted successfully');
@@ -161,7 +158,7 @@ export default function TermsPage() {
         toast.error(result.error || 'Failed to delete terms and conditions');
       }
     } catch (error) {
-      toast.error('Network error. Please try again.'); 
+      toast.error('Network error. Please try again.');
     }
   };
 
@@ -173,20 +170,20 @@ export default function TermsPage() {
       });
       
       if (result.success) {
-        await fetchTerms(); // Refresh the list
+        await fetchTerms();
         toast.success('Terms and conditions published successfully');
       } else {
         toast.error(result.error || 'Failed to publish terms and conditions');
       }
     } catch (error) {
-      toast.error('Network error. Please try again.'); 
+      toast.error('Network error. Please try again.');
     }
   };
 
   // Initialize data
   useEffect(() => {
     fetchTerms();
-  }, [searchTerm, statusFilter, languageFilter]);
+  }, [fetchTerms]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -291,7 +288,7 @@ export default function TermsPage() {
             <div className='flex items-center justify-between'>
               <div>
                 <CardTitle>Terms and Conditions Management</CardTitle>
-                <CardDescription>Create, edit, and manage your platform's terms and conditions</CardDescription>
+                <CardDescription>Create, edit, and manage your platform&apos;s terms and conditions</CardDescription>
               </div>
               <Button
                 variant='outline'
@@ -358,7 +355,7 @@ export default function TermsPage() {
                 <p className='text-lg font-medium text-muted-foreground mb-2'>No terms and conditions found</p>
                 <p className='text-sm text-muted-foreground'>
                   {searchTerm || statusFilter !== 'all' || languageFilter !== 'all'
-                    ? 'No terms and conditions found matching your filters.' 
+                    ? 'No terms and conditions found matching your filters.'
                     : 'No terms and conditions found. Create your first terms and conditions!'}
                 </p>
               </div>
