@@ -17,9 +17,9 @@ import {
   Users, 
   Clock, 
   BookOpen,
-  Video,
+  // ...existing code...
   Loader2,
-  Eye,
+  // ...existing code...
   DollarSign,
   Calendar,
   PlayCircle,
@@ -96,8 +96,7 @@ export default function TopicDetailsPage() {
         setLoading(true);
         const result = await apiService.get(API_ENDPOINTS.TOPICS.BY_ID(topicId));
         
-        console.log('🔍 Topic API Response:', result);
-        console.log('📊 Topic Data:', result.data);
+  // ...existing code...
         
         if (result.success && result.data) {
           setTopic(result.data);
@@ -106,7 +105,7 @@ export default function TopicDetailsPage() {
           toast.error('Failed to load topic data');
         }
       } catch (error) {
-        console.error('Error fetching topic:', error);
+  // ...existing code...
         setError('Failed to load topic data');
         toast.error('Failed to load topic data');
       } finally {
@@ -120,7 +119,7 @@ export default function TopicDetailsPage() {
   }, [topicId]);
 
   const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete this topic? This action cannot be undone.')) {
+  if (!confirm('Are you sure you want to delete this topic? This action cannot be undone.')) {
       return;
     }
 
@@ -135,7 +134,7 @@ export default function TopicDetailsPage() {
         toast.error(result.error || 'Failed to delete topic');
       }
     } catch (error) {
-      console.error('Error deleting topic:', error);
+  // ...existing code...
       toast.error('Failed to delete topic');
     } finally {
       setActionLoading(false);
@@ -159,7 +158,7 @@ export default function TopicDetailsPage() {
         toast.error(result.error || 'Failed to update topic');
       }
     } catch (error) {
-      console.error('Error updating topic:', error);
+  // ...existing code...
       toast.error('Failed to update topic');
     } finally {
       setActionLoading(false);
@@ -213,7 +212,7 @@ export default function TopicDetailsPage() {
         <div className="text-center py-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Topic Not Found</h2>
           <p className="text-gray-600 mb-6">
-            The topic you're looking for doesn't exist or couldn't be loaded.
+            The topic you&apos;re looking for doesn&apos;t exist or couldn&apos;t be loaded.
           </p>
           <Link href="/dashboard/topics">
             <Button>
